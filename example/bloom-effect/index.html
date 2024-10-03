@@ -18,7 +18,7 @@
 
     const { useRef, useEffect } = React;
 
-    fetch('../datasets/miserables.json').then(res => res.json()).then(data => {
+    fetch('../datasets/lifemap.json').then(res => res.json()).then(data => {
       const FocusGraph = () => {
         const fgRef = useRef();
 
@@ -28,6 +28,15 @@
           bloomPass.radius = 1;
           bloomPass.threshold = 0;
           fgRef.current.postProcessingComposer().addPass(bloomPass);
+
+          const timer = setTimeout(() => {
+            if (fgRef.current) {
+              fgRef.current.zoomToFit(2000, 50); // 2000ms transition, 100 padding
+            }
+          }, 1000); // 2000ms = 2 seconds delay
+        
+          // Cleanup function to clear the timeout if the component unmounts
+          return () => clearTimeout(timer);
         }, []);
 
         return <ForceGraph3D
@@ -36,6 +45,8 @@
           graphData={data}
           nodeLabel="id"
           nodeAutoColorBy="group"
+          nodeRelSize={8} // Increased node size
+          linkWidth={2.4} // Slightly thicker links for visibility
         />;
       };
 
