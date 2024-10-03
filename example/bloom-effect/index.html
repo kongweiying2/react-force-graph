@@ -68,7 +68,7 @@
             ref={fgRef}
             backgroundColor="#000003"
             graphData={data}
-            nodeVal={node => Math.pow(node.importance, 2.5)} // Dynamic node size based on importance
+            nodeVal={node => Math.pow(node.importance, 2)} // Dynamic node size based on importance
             nodeColor={node => {
               // Get the base color from the group
               const baseColor = groupColors[node.group] || '#FFFFFF'; // Default to white if group not found
