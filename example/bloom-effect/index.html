@@ -57,7 +57,7 @@
           12: '#FFCC59', // Brighter Golden
           13: '#59FFE6', // Brighter Turquoise
           14: '#59FFA6', // Brighter Green
-          15: '#FFE659'  // Brighter Yellow
+          15: '#FFFFFF'  // White
         };
 
         // Determine the maximum recency value for normalization
@@ -72,6 +72,9 @@
               // Assuming importance is between 1 and 10 (adjust if different)
               const normalizedImportance = (node.importance - 1) / 9; // Normalize to 0-1 range
               const sizeRange = 29; // Range from 1 to 30
+              if (node.group === 15) {
+                return 1 + normalizedImportance * sizeRange * 0.1;
+              }
               return 1 + normalizedImportance * sizeRange;
             }}
             nodeColor={node => {
