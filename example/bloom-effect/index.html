@@ -82,10 +82,14 @@
               // Assuming importance is between 1 and 10 (adjust if different)
               const normalizedImportance = (node.importance - 1) / 9; // Normalize to 0-1 range
               const sizeRange = 29; // Range from 1 to 30
+              let baseSize = 1 + normalizedImportance * sizeRange;
               if (node.group === 15) {
-                return 1 + normalizedImportance * sizeRange * 0.1;
+                baseSize = 1 + normalizedImportance * sizeRange * 0.1;
               }
-              return 1 + normalizedImportance * sizeRange;
+              if (node.isIsolated) {
+                baseSize *= 0.6; // Reduce size by 40%
+              }
+              return baseSize;
             }}
             nodeColor={node => {
               if (node.isIsolated) {
