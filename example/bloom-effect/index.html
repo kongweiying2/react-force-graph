@@ -19,6 +19,16 @@
     const { useRef, useEffect } = React;
 
     fetch('../datasets/lifemap.json').then(res => res.json()).then(data => {
+      // Determine isolated nodes by calculating node degrees
+      const nodeLinkCounts = data.links.reduce((acc, link) => {
+        acc[link.source] = (acc[link.source] || 0) + 1;
+        acc[link.target] = (acc[link.target] || 0) + 1;
+        return acc;
+      }, {});
+      data.nodes.forEach(node => {
+        node.isIsolated = !(node.id in nodeLinkCounts);
+      });
+
       const FocusGraph = () => {
         const fgRef = useRef();
 
@@ -78,6 +88,10 @@
               return 1 + normalizedImportance * sizeRange;
             }}
             nodeColor={node => {
+              if (node.isIsolated) {
+                return '#CCCCCC'; // Default color for isolated nodes
+              }
+
               // Get the base color from the group
               const baseColor = groupColors[node.group] || '#FFFFFF'; // Default to white if group not found
 
